@@ -24,6 +24,9 @@ Route::get('createUser', 'App\Http\Controllers\UsersController@createUser');
 
 Route::get('updateUser', 'App\Http\Controllers\UsersController@updateUser');
 
+Route::patch('update', 'App\Http\Controllers\UpdateController@updatingUser');
+
+
 /*
 Route::('','');
 */

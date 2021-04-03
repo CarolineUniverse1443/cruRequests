@@ -9,9 +9,5 @@ class User extends Model
 {
     public $timestamps = false;
 
-/*    public $table -> timestamp('updated_at') -> nullable();
-*/
-    public $fillable =['name','surname','e-mail','telephone_number', 'date_of_birth'];
-
-    public $guarded = ['ID'];	
+	public $fillable =['name','surname','date_of_birth','telephone','password'];
 }
