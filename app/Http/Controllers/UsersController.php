@@ -44,4 +44,71 @@ class UsersController extends Controller
       ->update(['name' => 'Евгений']);  
       	return response()->json('Запись изменена'/*$user->save()); */
     }
+
+    public function registerUser(Request $req)
+    {
+        $label = false;
+        $res = "";
+        if($req->name == null)
+        {
+            $label = true;
+            $res .= 'Не заполнено поле name \n';
+            //return response()->json('Не заполнено поле name');
+        }
+        if($req->surname == null)
+        {
+            $label = true;
+            $res .= 'Не заполнено поле surname \n';
+            //return response()->json('Не заполнено поле surname');
+        }
+        if($req->date_of_birth == null)
+        {
+            $label = true;
+            $res .= 'Не заполнено поле date_of_birth \n';
+            //return response()->json('Не заполнено поле date_of_birth');
+        }
+        if($req->telephone == null)
+        {
+            $label = true;
+            $res .= 'Не заполнено поле telephone \n';
+            //return response()->json('Не заполнено поле telephone');
+        }
+        if($req->password == null)
+        {
+            $label = true;
+            $res .= 'Не заполнено поле password \n';
+            //return response()->json('Не заполнено поле password');
+        }
+
+        if($label == false)
+        {
+            $user = new User();
+            $user -> create($req->all());
+            $res = 'Регистрация прошла успешно';
+            
+        }
+
+        return response()->json($res);
+    }
+
+    public function signIn(Request $req)
+    {
+        $user = User::where('telephone', $req->telephone)->first();
+
+        if($user)
+        {
+            if($req->password == $user->password)
+            {
+                return response()->json('Авторизация прошла успешно');
+            }
+            else
+            {
+                return response()->json('Неправильно указан пароль');
+            }
+        }
+        else
+        {
+            return response()->json('Неправильно указан логин');
+        }
+    }
 }
