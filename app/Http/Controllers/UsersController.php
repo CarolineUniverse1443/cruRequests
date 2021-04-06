@@ -117,14 +117,11 @@ class UsersController extends Controller
             'password' => 'required',
         ]);
 
-        if($validator)
-        {
-            $user = User::create($req->all());
-            return response()->json('Регистрация прошла успешно');
-        }
         if ($validator->fails()) {
-            return 'Ошибка валидации';
+            return response()->json($validator->errors());
         }
 
+        $user = User::create($req->all());
+        return response()->json('Регистрация прошла успешно');
     }
 }
