@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 
 class UsersController extends Controller
@@ -15,7 +17,7 @@ class UsersController extends Controller
 
     public function createUser(Request $req)
     {
-    	//$info = array('name' => 'Ян', 'surname' => 'Топлес', 'e-mail' => 'toples@mail.ru', 'telephone_number' => '+79284302417', 'date_of_birth' => '1987/03/04');
+    	//$info = array('name' => 'Ян', 'surname' => 'Топлес', 'email' => 'toples@mail.ru', 'telephone_number' => '+79284302417', 'date_of_birth' => '1987/03/04');
         
     	$person = new User();
     	$person -> create($req->all());
@@ -53,39 +55,32 @@ class UsersController extends Controller
         {
             $label = true;
             $res .= 'Не заполнено поле name \n';
-            //return response()->json('Не заполнено поле name');
         }
         if($req->surname == null)
         {
             $label = true;
             $res .= 'Не заполнено поле surname \n';
-            //return response()->json('Не заполнено поле surname');
         }
         if($req->date_of_birth == null)
         {
             $label = true;
             $res .= 'Не заполнено поле date_of_birth \n';
-            //return response()->json('Не заполнено поле date_of_birth');
         }
         if($req->telephone == null)
         {
             $label = true;
             $res .= 'Не заполнено поле telephone \n';
-            //return response()->json('Не заполнено поле telephone');
         }
         if($req->password == null)
         {
             $label = true;
             $res .= 'Не заполнено поле password \n';
-            //return response()->json('Не заполнено поле password');
         }
-
         if($label == false)
         {
             $user = new User();
             $user -> create($req->all());
-            $res = 'Регистрация прошла успешно';
-            
+            $res = 'Регистрация прошла успешно';         
         }
 
         return response()->json($res);
@@ -110,5 +105,26 @@ class UsersController extends Controller
         {
             return response()->json('Неправильно указан логин');
         }
+    }
+
+    public function registerValidate(Request $req)
+    {
+        $validator = Validator::make($req->all(), [
+            'name' => 'required',
+            'surname' => 'required',
+            'date_of_birth' => 'required',
+            'telephone' => 'required|unique:users',
+            'password' => 'required',
+        ]);
+
+        if($validator)
+        {
+            $user = User::create($req->all());
+            return response()->json('Регистрация прошла успешно');
+        }
+        if ($validator->fails()) {
+            return 'Ошибка валидации';
+        }
+
     }
 }

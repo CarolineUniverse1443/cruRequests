@@ -22,9 +22,12 @@ Route::get('getUsers', 'App\Http\Controllers\UsersController@getUsers');
 
 Route::get('createUser', 'App\Http\Controllers\UsersController@createUser');
 
-Route::get('updateUser', 'App\Http\Controllers\UsersController@updateUser');
+Route::patch('updateUser', 'App\Http\Controllers\UsersController@updateUser');
 
 //Route::patch('update', 'App\Http\Controllers\UpdateController@updatingUser');
 
 Route::post('sign_up', 'App\Http\Controllers\UsersController@registerUser');
 Route::post('sign_in', 'App\Http\Controllers\UsersController@signIn');
+
+Route::post('register', 'App\Http\Controllers\UsersController@registerValidate');
+
