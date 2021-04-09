@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
+use Illuminate\Support\Str;
 
 class UsersController extends Controller
 {
@@ -117,11 +118,42 @@ class UsersController extends Controller
             'password' => 'required',
         ]);
 
-        if ($validator->fails()) {
+        if ($validator->fails())
             return response()->json($validator->errors());
-        }
 
         $user = User::create($req->all());
         return response()->json('Регистрация прошла успешно');
+    }
+
+    public function loginValidate(Request $req) 
+    {
+        $validator = Validator::make($req->all(), [
+            'telephone' => 'required|digits:11|exists:users,telephone',
+            'password' => 'required|exists:users,password',
+        ]);
+
+        if ($validator->fails()) {
+            $failedRule = $validator->failed();
+            if(isset($failedRule['telephone']['Exists']) || isset($failedRule['password']['Exists']))
+                return response()->json('Логин или пароль введены неверно');
+            return response()->json($validator->errors());
+        }
+
+        $user = User::where("telephone",$req->telephone)->first();
+        $user->api_token = Str::random(50);
+        $user->save();
+        return response()->json('Авторизация прошла успешно, api_token юзера: '.$user->api_token);
+    }
+
+    public function logout(Request $req)
+    {
+        $user = User::where("api_token",$req->api_token)->first();
+
+        if($user && $req->api_token != null)
+        {
+            $user->api_token = null;
+            $user->save();
+            return response()->json('Пользователь разлогинился');
+        }
     }
 }
