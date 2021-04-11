@@ -20,8 +20,15 @@ class GoodsController extends Controller
 
     public function updateGood(Request $req)
     {
-    	$product = Good::where("name",$req->name)->update($req->all());
-    	return response()->json("Запись изменена");
+    	$product = Good::where("name",$req->name)->first();/*update($req->all())*/
+
+    	if($product)
+    	{
+    		$product->update($req->all());
+	    	return response()->json("Запись изменена");
+    	}
+    	else
+    		return response()->json("Запись не найдена");
     }
 
     public function deleteGood(Request $req)

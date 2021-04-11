@@ -155,5 +155,7 @@ class UsersController extends Controller
             $user->save();
             return response()->json('Пользователь разлогинился');
         }
+        else
+            return response()->json("Введен неверный api_token");
     }
 }
