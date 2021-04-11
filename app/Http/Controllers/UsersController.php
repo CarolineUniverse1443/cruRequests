@@ -47,7 +47,7 @@ class UsersController extends Controller
       ->update(['name' => 'Евгений']);  
       	return response()->json('Запись изменена'/*$user->save()); */
     }
-
+ 
     public function registerUser(Request $req)
     {
         $label = false;

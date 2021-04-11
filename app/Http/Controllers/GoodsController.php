@@ -26,7 +26,15 @@ class GoodsController extends Controller
 
     public function deleteGood(Request $req)
     {
-    	$product = Good::where("name", $req->name)->delete();
-    	return response()->json("Товар удален");
+    	$product = Good::where("name", $req->name)->first();
+
+    	if($product)
+    	{
+    		$product->delete();
+    		return response()->json("Товар удален");
+    	}
+    	else
+    		return response()->json("Запись не найдена");
+    	
     }
 }
