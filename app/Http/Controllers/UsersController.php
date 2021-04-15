@@ -140,9 +140,11 @@ class UsersController extends Controller
         }
 
         $user = User::where("telephone",$req->telephone)->first();
-        $user->api_token = Str::random(50);
-        $user->save();
-        return response()->json('Авторизация прошла успешно, api_token юзера: '.$user->api_token);
+        //$user->api_token = Str::random(50);
+        
+        /*$user->api_token = User::Generate();
+        $user->save();*/
+        return response()->json('Авторизация прошла успешно, api_token юзера: '.$user->generate());
     }
 
     public function logout(Request $req)
