@@ -157,7 +157,28 @@ class UsersController extends Controller
             $user->save();
             return response()->json('Пользователь разлогинился');
         }
-        else
-            return response()->json("Введен неверный api_token");
+        
+        return response()->json("Введен неверный api_token");
+    }
+
+    public function resetPassword(Request $req)
+    {
+        $validator = Validator::make($req->all(), [
+            'api_token' => 'required|exists:users,api_token',
+            'password' => 'required',
+            'new_password' => 'required',
+        ]);
+
+        if($validator->fails())
+            return response()->json($validator->errors());
+        
+        $user = User::where("api_token",$req->api_token)->first();
+        
+        if($req->password != $user->password)
+            return response()->json("Введен неверный пароль");
+
+        $user->password = $req->new_password;
+        $user->save();
+        return response()->json("Пароль успешно изменен");
     }
 }

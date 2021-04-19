@@ -32,6 +32,8 @@ Route::post('sign_in', 'App\Http\Controllers\UsersController@signIn');
 Route::post('register', 'App\Http\Controllers\UsersController@registerValidate');
 Route::post('login', 'App\Http\Controllers\UsersController@loginValidate');
 Route::post('logout', 'App\Http\Controllers\UsersController@logout');
+Route::post('reset', 'App\Http\Controllers\UsersController@resetPassword');
+
 
 //================= Goods ================//
 
