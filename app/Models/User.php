@@ -7,17 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 class User extends Model
-{
+{ 
     public $timestamps = false;
 
 	public $fillable =['name','surname','date_of_birth','telephone','password', 'api_token'];
 
-	public $hidden = ['password'];
+	//public $hidden = ['password'];
 
 	public function generate()
 	{
 		$token = Str::random(50);
-		$token = $this->api_token;
+		$this->api_token = $token;
 		$this->save();
 		return $token;
 	}
